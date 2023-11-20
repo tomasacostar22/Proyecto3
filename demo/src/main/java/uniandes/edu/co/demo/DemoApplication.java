@@ -45,10 +45,10 @@ public class DemoApplication  implements CommandLineRunner{
 		}
 
 		//INSERT / UPDATE
-		//barRepository.save(new Bar(101, "Bar de prueba","Cali","Alto",2));
+		barRepository.save(new Bar(101, "Bar de prueba","Cali","Alto",2));
 
-		//UPdate
-		//barRepository.aniadirBebidaABar(101, "Bebida de prueba 2", "aperitivo", 10, "diurno", 10);
+		//Update
+		barRepository.aniadirBebidaABar(101, "Bebida de prueba 2", "aperitivo", 10, "diurno", 10);
 	}
 
 }
