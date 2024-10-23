@@ -2,7 +2,7 @@
 
 Bienvenidos a la aplicación **MiniParranderosNoSQL**.
 
-Este proyecto implementa una aplicación que conecta con MongoDB y permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en la colección de **Bares**, además de consultas avanzadas utilizando **pipelines de agregación** para resolver problemas complejos como la consulta de las **Top 3 bebidas más servidas en bares frecuentados por bebedores**.
+Este proyecto implementa una aplicación que conecta con MongoDB y permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en la colección de **Bares** y **Bebedores**, además de consultas avanzadas utilizando **pipelines de agregación** para resolver problemas complejos como la consulta de las **Top 3 bebidas más servidas en bares frecuentados por bebedores**.
 
 ## Tabla de Contenidos
 1. [Conexión Inicial](#conexión-inicial)
