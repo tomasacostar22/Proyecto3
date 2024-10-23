@@ -2,6 +2,7 @@ package uniandes.edu.co.demo.controller;
 
 import java.util.List;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import uniandes.edu.co.demo.modelo.Bar;
 import uniandes.edu.co.demo.repository.BarRepository;
+import uniandes.edu.co.demo.repository.BarRepositoryCustom;
 
 @RestController
 @RequestMapping("/bares")
@@ -83,4 +85,21 @@ public class BaresController {
         }
     }
 
+    @Autowired
+    private BarRepositoryCustom barRepositoryCustom;
+
+    // Obtener las bebidas más consumidas
+    @GetMapping("/mas-consumidas")
+    public ResponseEntity<List<Document>> obtenerBebidasMasConsumidas() {
+        try {
+            // Llamar al método en el repository que realiza la agregación
+            List<Document> resultado = barRepositoryCustom.obtenerBebidasMasConsumidas();
+
+            // Retornar el resultado de la consulta
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

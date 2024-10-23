@@ -8,6 +8,20 @@
 	},
 	"item": [
 		{
+			"name": "Consulta Avanzada",
+			"item": [
+				{
+					"name": "Get Bebidas Mas Consumidas en Bares",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/bares/mas-consumidas"
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Bares",
 			"item": [
 				{
