@@ -1,4 +1,5 @@
 package uniandes.edu.co.demo.controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.demo.modelo.Proveedor;
 import uniandes.edu.co.demo.repository.ProveedorRepository;
-import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/proveedor")
 public class ProveedorController {
 
+    @Autowired
     private ProveedorRepository proveedorRepository;
 
     // Crear un nuevo proveedor
@@ -29,7 +31,7 @@ public class ProveedorController {
     }
 
     // Actualizar un proveedor
-    @PutMapping("/actualizar")
+    @PostMapping("/actualizar")
     public ResponseEntity<String> actualizarProveedor(@RequestBody Proveedor proveedor) {
         try {
             proveedorRepository.actualizarProveedor(proveedor);
