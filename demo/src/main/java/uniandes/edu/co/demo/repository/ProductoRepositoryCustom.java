@@ -105,7 +105,7 @@ public class ProductoRepositoryCustom {
                     ),
                     // Sucursal específica
                     new Document("$or", List.of(
-                        new Document("Sucursales.nombre", sucursal), // Sucursal específica
+                        new Document("Sucursales._id", sucursal), // Sucursal específica
                         new Document("Categoria.nombre", categoria) // Categoría específica
                     ))
                 ))

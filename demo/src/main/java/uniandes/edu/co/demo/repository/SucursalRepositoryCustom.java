@@ -25,7 +25,7 @@ public class SucursalRepositoryCustom {
     public List<Document> generarReportePorSucursal(String nombreSucursal) {
         List<Document> pipeline = List.of(
             // Filtrar por la sucursal específica
-            new Document("$match", new Document("nombre", nombreSucursal)),
+            new Document("$match", new Document("_id", nombreSucursal)),
             
             // Descomponer el array de bodegas
             new Document("$unwind", "$bodegas"),
