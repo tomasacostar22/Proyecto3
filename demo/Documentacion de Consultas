@@ -1,0 +1,118 @@
+## **Documentación de Consultas**
+
+### **Estructura General**
+El sistema está diseñado siguiendo una arquitectura organizada en **cuatro capas principales**, cada una desempeñando un rol específico en el flujo de las consultas:
+
+1. **Controller:** Define los endpoints HTTP y canaliza las solicitudes hacia la capa de servicio.
+2. **Service:** Implementa la lógica de negocio, validaciones y transformaciones necesarias antes de interactuar con los datos.
+3. **Repository:** Gestiona las interacciones directas con la base de datos MongoDB.
+4. **Entity:** Representa las estructuras de datos de MongoDB en clases de Java.
+
+---
+
+### **Consultas CRUD y Descripción**
+
+#### **1. Crear una Sucursal**
+- **Tipo de Operación:** `CREATE` (C en CRUD).
+- **Descripción:** Permite agregar una nueva sucursal al sistema. La solicitud llega al controlador, donde se valida que no exista una sucursal con el mismo código. La sucursal se guarda en la colección correspondiente en MongoDB a través de un repositorio.
+- **Relación con el Diagrama:** Una sucursal puede estar asociada a varias bodegas mediante el campo `codigoSucursal`.
+
+---
+
+#### **2. Crear y Eliminar una Bodega**
+- **Crear Bodega:**
+  - **Tipo de Operación:** `CREATE`.
+  - **Descripción:** Se agrega una bodega al sistema y se vincula con una sucursal existente. Los datos se validan en la capa de servicio y se insertan en MongoDB.
+- **Eliminar Bodega:**
+  - **Tipo de Operación:** `DELETE`.
+  - **Descripción:** Permite eliminar una bodega existente identificada por su código único. La bodega se elimina de la colección correspondiente.
+- **Relación con el Diagrama:** Las bodegas están referenciadas por las sucursales, y cada bodega puede contener productos en su inventario.
+
+---
+
+#### **3. Crear o Actualizar un Proveedor**
+- **Tipo de Operación:** `CREATE` y `UPDATE`.
+- **Descripción:** Si el proveedor no existe, se crea uno nuevo. Si ya existe (identificado por el `NIT`), se actualizan sus datos. La solicitud fluye desde el controlador al servicio, donde se valida y gestiona la lógica necesaria antes de interactuar con la base de datos.
+- **Relación con el Diagrama:** Los proveedores están referenciados por las órdenes de compra mediante su `NIT`.
+
+---
+
+#### **4. Crear una Categoría de Producto**
+- **Tipo de Operación:** `CREATE`.
+- **Descripción:** Permite agregar una nueva categoría de productos. El servicio valida que la categoría no exista previamente, y los datos se almacenan en MongoDB a través del repositorio.
+- **Relación con el Diagrama:** Cada producto está relacionado con una categoría mediante su `codigoCategoria`.
+
+---
+
+#### **5. Crear un Producto**
+- **Tipo de Operación:** `CREATE`.
+- **Descripción:** Permite registrar un nuevo producto, asociándolo a una categoría existente. La solicitud pasa desde el controlador al servicio, donde se valida la existencia de la categoría, y luego al repositorio para almacenarlo en la base de datos.
+- **Relación con el Diagrama:** Los productos pertenecen a categorías y pueden formar parte de órdenes de compra y del inventario.
+
+---
+
+#### **6. Crear una Orden de Compra**
+- **Tipo de Operación:** `CREATE`.
+- **Descripción:** Permite registrar una nueva orden de compra para una sucursal específica. La solicitud utiliza un **DTO** para simplificar la transferencia de datos entre el frontend y el backend. Se validan los datos relacionados (sucursal, proveedor, productos) antes de guardar la orden en la base de datos.
+- **Relación con el Diagrama:** La orden de compra referencia sucursales, proveedores y productos, conectando varias entidades en el sistema.
+
+---
+
+#### **7. Leer una Orden de Compra**
+- **Tipo de Operación:** `READ` (R en CRUD).
+- **Descripción:** Permite consultar los detalles de una orden de compra específica mediante su código único. La solicitud llega al controlador, que utiliza el repositorio para buscar la orden en la base de datos.
+- **Relación con el Diagrama:** La orden incluye productos embebidos en su detalle y referencias a sucursales y proveedores.
+
+---
+
+#### **8. Mostrar Productos con Ciertas Características**
+- **Tipo de Operación:** `READ`.
+- **Descripción:** Filtra productos según criterios específicos, como nombre, rango de precio u otros atributos. El servicio construye los filtros dinámicamente y realiza la consulta en la base de datos.
+- **Relación con el Diagrama:** Permite realizar búsquedas avanzadas sobre la colección de productos, apoyándose en los atributos definidos en el modelo de datos.
+
+---
+
+#### **9. Inventario de Productos en una Sucursal**
+- **Tipo de Operación:** `READ`.
+- **Descripción:** Consulta los productos disponibles en el inventario de una sucursal específica. La solicitud pasa por el controlador y el servicio, donde se valida el código de la sucursal, y finalmente se realiza la consulta en MongoDB.
+- **Relación con el Diagrama:** El inventario conecta productos y bodegas, relacionándolos con sucursales a través de los códigos correspondientes.
+
+---
+
+### **Cómo se Conectan las Capas**
+
+1. **Controladores (Controllers):**
+   - Definen los endpoints y los métodos HTTP (`POST`, `GET`, `DELETE`, etc.).
+   - Reciben los datos de entrada (parámetros o cuerpo de la solicitud).
+   - Delegan la lógica de negocio a los servicios.
+
+2. **Servicios (Services):**
+   - Implementan la lógica de negocio, como validaciones, transformaciones o cálculos.
+   - Interactúan con los repositorios para realizar operaciones en la base de datos.
+
+3. **Repositorios (Repositories):**
+   - Gestionan las operaciones CRUD con la base de datos MongoDB.
+   - Utilizan `MongoRepository` para operaciones básicas y `MongoTemplate` para consultas personalizadas.
+
+4. **Entidades (Entities):**
+   - Representan los documentos almacenados en MongoDB.
+   - Los atributos de las entidades corresponden a los campos de las colecciones en la base de datos.
+
+5. **DTO (Orden de Compra):**
+   - Facilita la transferencia de datos al agrupar información compleja (productos, proveedor, sucursal) en una sola estructura.
+
+---
+
+### **Relación con los Diagramas**
+
+- **Diagramas Estructurales:**
+  - Representan cómo las entidades están relacionadas entre sí en MongoDB.
+  - Cada clase en la capa de entidades (como `Sucursal`, `Bodega`, `Producto`, etc.) corresponde a una colección o subdocumento en la base de datos.
+
+- **Diagramas de Relaciones:**
+  - Conexiones como `codigoSucursal` en bodegas o `codigoCategoria` en productos se utilizan para referenciar documentos relacionados.
+
+---
+
+### **Conclusión**
+Esta documentación muestra cómo cada consulta interactúa con las capas del sistema y se conecta con la base de datos MongoDB. La estructura modular facilita el mantenimiento y escalabilidad del proyecto, mientras que el uso de DTOs, validaciones en servicios y consultas específicas en repositorios asegura la correcta operación del sistema. 🚀

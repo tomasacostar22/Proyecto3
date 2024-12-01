@@ -1,0 +1,93 @@
+## **Justificación del Diseño del Sistema**
+
+### **1. Análisis del Nivel de Carga**
+El análisis del nivel de carga de las entidades en el sistema se realizó considerando:
+- **Frecuencia de consultas** diarias (`Query/día`).
+- **Cantidad de datos** almacenados por entidad.
+- **Índice de carga**, calculado como el producto entre la frecuencia y la cantidad de datos. Este índice representa el nivel de estrés sobre cada entidad.
+
+#### **Tabla Resumida del Nivel de Carga**
+
+| **Entidad**        | **Frecuencia alta (Query/día)** | **Cantidad alta de datos** | **Índice de carga elevado** |
+|---------------------|---------------------------------|-----------------------------|-----------------------------|
+| **Producto**        | POST/PUT (10,000) / GET (2,000) | 20,000 registros            | 240,000,000                |
+| **Orden de Compra** | POST/PUT (200) / GET (1,000)    | 200,000 registros           | 240,000,000                |
+| **Proveedor**       | POST/PUT (10) / GET (200)       | 10,000 registros            | 2,100,000                  |
+
+De este análisis se concluye que las entidades con **índice de carga más elevado** requieren optimización prioritaria para garantizar el rendimiento del sistema.
+
+---
+
+### **2. Decisiones de Diseño Justificadas**
+
+#### **Producto**
+- **Razonamiento:**
+  - Es la entidad con el mayor número de actualizaciones (`POST/PUT: 10,000 queries/día`) y lecturas (`GET: 2,000 queries/día`).
+  - Tiene una cantidad considerable de datos (`20,000 registros`), resultando en un índice de carga elevado (**240,000,000**).
+- **Decisiones tomadas:**
+  1. **Índices:** Se implementarán índices en campos de uso frecuente, como `codigo_barras`, para mejorar la eficiencia de las consultas `GET`.
+  2. **Caching:** Las consultas más frecuentes (detalles de productos) se almacenarán en una capa de caché (Redis) para reducir la carga en MongoDB.
+  3. **Sharding:** Si los datos crecen significativamente, se evaluará particionar la colección `Producto` en varios nodos de MongoDB.
+
+---
+
+#### **Orden de Compra**
+- **Razonamiento:**
+  - Maneja una gran cantidad de registros (`200,000`) y una frecuencia elevada de consultas, especialmente `GET: 1,000 queries/día`.
+  - Su índice de carga (**240,000,000**) requiere atención prioritaria.
+- **Decisiones tomadas:**
+  1. **Optimización de datos embebidos:** Los documentos de `Detalle`, embebidos dentro de `Orden de Compra`, permiten acceder a la información relacionada directamente desde la misma consulta.
+  2. **Índices compuestos:** Se implementarán índices en los campos `estado`, `codigo_sucursal` y `NIT_proveedor` para optimizar búsquedas por filtros.
+  3. **Monitoreo de carga:** Se implementarán métricas para detectar patrones de uso y anticipar posibles cuellos de botella.
+
+---
+
+#### **Proveedor**
+- **Razonamiento:**
+  - Aunque su índice de carga (**2,100,000**) es menor, la entidad `Proveedor` es crítica porque está relacionada directamente con las órdenes de compra.
+- **Decisiones tomadas:**
+  1. **Gestión centralizada:** Los datos de los proveedores no se embeben dentro de las órdenes de compra para evitar duplicidades y permitir actualizaciones independientes.
+  2. **Índices:** Se crearán índices en el campo `NIT` (identificador único) para garantizar tiempos de respuesta rápidos en las consultas.
+
+---
+
+#### **Bodega y Sucursal**
+- **Razonamiento:**
+  - Estas entidades tienen un índice de carga bajo debido a la baja frecuencia de consultas (`0.033 a 0.143 queries/día`) y la cantidad moderada de registros (`150 a 900`).
+- **Decisiones tomadas:**
+  1. **Datos referenciados:** Las bodegas están referenciadas en las sucursales, manteniendo la estructura ligera y permitiendo su reutilización.
+  2. **Consultas directas:** Debido a su baja carga, no requieren optimizaciones avanzadas.
+
+---
+
+### **3. Planificación de Infraestructura**
+
+#### **MongoDB**
+- **Sharding:** Se aplicará en colecciones críticas como `Producto` y `Orden de Compra` para distribuir la carga en múltiples nodos.
+- **Índices:** 
+  - `Producto`: Índice en `codigo_barras`.
+  - `Orden de Compra`: Índices compuestos en `estado`, `codigo_sucursal` y `NIT_proveedor`.
+  - `Proveedor`: Índice en `NIT`.
+
+#### **Caching**
+- Se utilizará **Redis** para almacenar consultas frecuentes, como información de productos y órdenes recientes.
+
+#### **Escalabilidad Horizontal**
+- Para manejar picos de carga en operaciones `POST/PUT` de `Producto`, se implementará un **balanceo de carga** en servidores de aplicación.
+
+---
+
+### **4. Monitoreo y Métricas**
+Se implementarán herramientas para monitorear y anticipar problemas de rendimiento:
+1. **Prometheus y Grafana:** Supervisarán métricas como tiempos de respuesta por entidad, frecuencia de consultas y uso de índices en MongoDB.
+2. **Alertas:** Se configurarán notificaciones para detectar índices de carga superiores a lo esperado, evitando cuellos de botella.
+
+---
+
+### **5. Conclusión**
+El análisis del nivel de carga permitió:
+- **Identificar entidades críticas** como `Producto` y `Orden de Compra` y priorizar su optimización.
+- Diseñar una infraestructura escalable para soportar operaciones actuales y futuras.
+- **Justificar decisiones técnicas**, como el uso de índices, sharding y caching, para garantizar un rendimiento óptimo.
+
+Este diseño asegura un sistema eficiente, escalable y preparado para manejar grandes volúmenes de datos. 🚀
