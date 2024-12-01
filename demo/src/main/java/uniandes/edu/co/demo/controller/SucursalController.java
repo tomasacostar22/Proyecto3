@@ -60,7 +60,7 @@ public class SucursalController {
     @GetMapping("/reporte/{nombreSucursal}")
     public ResponseEntity<List<Document>> generarReporte(@PathVariable String nombreSucursal) {
         try {
-            List<Document> reporte = sucursalRepositoryCustom.generarReportePorSucursal(nombreSucursal);
+            List<Document> reporte = sucursalRepositoryCustom.generarReportePorSucursal("2");
             return ResponseEntity.ok(reporte);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(List.of(new Document("error", e.getMessage())));

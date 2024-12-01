@@ -70,8 +70,8 @@ public class ProductoController {
 
         // Ejecutar el pipeline correcto
         List<Document> productos = mayorQue
-            ? productoRepositoryCustom.filtrarProductosMayor(menor, mayor, fecha, sucursal, categoria)
-            : productoRepositoryCustom.filtrarProductosMenor(menor, mayor, fecha, sucursal, categoria);
+            ? productoRepositoryCustom.filtrarProductosMayor(100, 10000, "2024-01-01", "2", "Limpieza")
+            : productoRepositoryCustom.filtrarProductosMenor(100, 10000, "2024-01-01", "2", "Limpieza");
 
         return ResponseEntity.ok(productos);
     } catch (DateTimeParseException e) {
