@@ -1,5 +1,6 @@
 package uniandes.edu.co.demo.repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -21,7 +22,7 @@ public class ProductoRepositoryCustom {
      *
      * @return Lista de productos filtrados.
      */
-    public List<Document> filtrarProductosMayor(int menor,int mayor,String fecha, String sucursal,String categoria) {
+    public List<Document> filtrarProductosMayor(int menor, int mayor, String fecha, String sucursal, String categoria) {
         List<Document> pipeline = List.of(
             // Primer lookup: Vincula con la colección Inventario
             new Document("$lookup", new Document()
@@ -52,23 +53,27 @@ public class ProductoRepositoryCustom {
                         .append("$gte", menor)
                         .append("$lte", mayor)
                     ),
-                    // Fecha de expiración
+                    // Fecha de expiración (convertida a ISODate)
                     new Document("fechaExpiracion", new Document()
-                        .append("$gt", fecha) // Formato ISODate
+                        .append("$gt", ISODate(fecha)) // Convierte la fecha a ISODate
                     ),
-                    // Sucursal específica
+                    // Sucursal y categoría específicas
                     new Document("$or", List.of(
-                        new Document("Sucursales.nombre", sucursal), // Sucursal específica
-                        new Document("Categoria.nombre", categoria) // Categoría específica
+                        new Document("Sucursales._id", sucursal), // Compara con _id en lugar de nombre
+                        new Document("Categoria.nombre", categoria) // Compara el nombre de la categoría
                     ))
                 ))
             )
         );
+
+        // Log para depurar el pipeline
+        System.out.println("Pipeline construido: " + pipeline);
 
         // Ejecutar el pipeline en la colección "Productos"
         return mongoTemplate.getCollection("Productos").aggregate(pipeline).into(new java.util.ArrayList<>());
     }
-    public List<Document> filtrarProductosMenor(int menor,int mayor,String fecha, String sucursal,String categoria) {
+
+    public List<Document> filtrarProductosMenor(int menor, int mayor, String fecha, String sucursal, String categoria) {
         List<Document> pipeline = List.of(
             // Primer lookup: Vincula con la colección Inventario
             new Document("$lookup", new Document()
@@ -99,20 +104,32 @@ public class ProductoRepositoryCustom {
                         .append("$gte", menor)
                         .append("$lte", mayor)
                     ),
-                    // Fecha de expiración
+                    // Fecha de expiración menor a la proporcionada
                     new Document("fechaExpiracion", new Document()
-                        .append("$lt", fecha) // Formato ISODate
+                        .append("$lt", ISODate(fecha)) // Convierte la fecha a ISODate
                     ),
-                    // Sucursal específica
+                    // Sucursal y categoría específicas
                     new Document("$or", List.of(
-                        new Document("Sucursales._id", sucursal), // Sucursal específica
-                        new Document("Categoria.nombre", categoria) // Categoría específica
+                        new Document("Sucursales._id", sucursal), // Compara con _id en lugar de nombre
+                        new Document("Categoria.nombre", categoria) // Compara el nombre de la categoría
                     ))
                 ))
             )
         );
 
+        // Log para depurar el pipeline
+        System.out.println("Pipeline construido: " + pipeline);
+
         // Ejecutar el pipeline en la colección "Productos"
         return mongoTemplate.getCollection("Productos").aggregate(pipeline).into(new java.util.ArrayList<>());
+    }
+
+    // Helper para convertir la fecha en ISODate
+    private Object ISODate(String fecha) {
+        try {
+            return new Date(java.sql.Date.valueOf(fecha).getTime());
+        } catch (Exception e) {
+            throw new RuntimeException("Formato de fecha inválido. Use YYYY-MM-DD.", e);
+        }
     }
 }
