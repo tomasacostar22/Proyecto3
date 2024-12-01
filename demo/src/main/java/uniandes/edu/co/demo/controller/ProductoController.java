@@ -2,8 +2,9 @@ package uniandes.edu.co.demo.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Collection;
 import java.util.List;
-
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,33 +51,40 @@ public class ProductoController {
     }
 
     @GetMapping("/filtrar/{menor}/{mayor}/{fecha}/{sucursal}/{categoria}/{mayorQue}")
-    public ResponseEntity<List<?>> filtrarProductos(
-        @PathVariable int menor,
-        @PathVariable int mayor,
-        @PathVariable String fecha,
-        @PathVariable String sucursal,
-        @PathVariable String categoria,
-        @PathVariable boolean mayorQue
-    ) {
-        try {
-            // Validaciones
-            if (menor > mayor) {
-                return ResponseEntity.badRequest().body(List.of("El precio menor no puede ser mayor que el precio mayor."));
-            }
-            LocalDate.parse(fecha); // Validar formato de fecha
-    
-            // Ejecutar el pipeline correcto
-            List<?> productos = mayorQue
-                ? productoRepositoryCustom.filtrarProductosMayor(menor, mayor, fecha, sucursal, categoria)
-                : productoRepositoryCustom.filtrarProductosMenor(menor, mayor, fecha, sucursal, categoria);
-    
-            return ResponseEntity.ok(productos);
-        } catch (DateTimeParseException e) {
-            return ResponseEntity.badRequest().body(List.of("Formato de fecha inválido. Use YYYY-MM-DD."));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(List.of("Error: " + e.getMessage()));
+    public ResponseEntity<List<Document>> filtrarProductos(
+    @PathVariable int menor,
+    @PathVariable int mayor,
+    @PathVariable String fecha,
+    @PathVariable String sucursal,
+    @PathVariable String categoria,
+    @PathVariable boolean mayorQue
+) {
+    try {
+        // Validaciones
+        if (menor > mayor) {
+            return ResponseEntity.badRequest().body(List.of(
+                new Document("error", "El precio menor no puede ser mayor que el precio mayor.")
+            ));
         }
+        LocalDate.parse(fecha); // Validar formato de fecha
+
+        // Ejecutar el pipeline correcto
+        List<Document> productos = mayorQue
+            ? productoRepositoryCustom.filtrarProductosMayor(menor, mayor, fecha, sucursal, categoria)
+            : productoRepositoryCustom.filtrarProductosMenor(menor, mayor, fecha, sucursal, categoria);
+
+        return ResponseEntity.ok(productos);
+    } catch (DateTimeParseException e) {
+        return ResponseEntity.badRequest().body(List.of(
+            new Document("error", "Formato de fecha inválido. Use YYYY-MM-DD.")
+        ));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(List.of(
+            new Document("error", e.getMessage())
+        ));
     }
+}
+
 }
         
     

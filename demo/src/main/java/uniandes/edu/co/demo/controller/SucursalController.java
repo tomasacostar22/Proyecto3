@@ -1,5 +1,7 @@
 package uniandes.edu.co.demo.controller;
 
+import java.util.List;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uniandes.edu.co.demo.modelo.Bodega;
 import uniandes.edu.co.demo.modelo.Sucursal;
 import uniandes.edu.co.demo.repository.SucursalRepository;
+import uniandes.edu.co.demo.repository.SucursalRepositoryCustom;
 
 @RestController
 @RequestMapping("/sucursal")
@@ -19,6 +22,8 @@ public class SucursalController {
 
     @Autowired
     private SucursalRepository sucursalRepository;
+    @Autowired
+    private SucursalRepositoryCustom sucursalRepositoryCustom;
 
     // Crear una nueva sucursal
     @PostMapping("/crear")
@@ -52,5 +57,15 @@ public class SucursalController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/reporte/{nombreSucursal}")
+    public ResponseEntity<List<Document>> generarReporte(@PathVariable String nombreSucursal) {
+        try {
+            List<Document> reporte = sucursalRepositoryCustom.generarReportePorSucursal(nombreSucursal);
+            return ResponseEntity.ok(reporte);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(List.of(new Document("error", e.getMessage())));
+        }
+    }
+    
         
 }
