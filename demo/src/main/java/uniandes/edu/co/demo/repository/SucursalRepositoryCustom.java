@@ -77,6 +77,6 @@ public class SucursalRepositoryCustom {
         );
 
         // Ejecutar el pipeline en la colección "Sucursales"
-        return mongoTemplate.getCollection("Sucursales").aggregate(pipeline).into(new java.util.ArrayList<>());
+        return mongoTemplate.getCollection("Sucursal").aggregate(pipeline).into(new java.util.ArrayList<>());
     }
 }
