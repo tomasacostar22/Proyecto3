@@ -135,3 +135,50 @@ Se diseñó usando documentos embebidos y referencias según las necesidades de 
 | Bodega   | Referencia | Relacionada a sucursales sin embebido porque tienen datos propios.            |
 | Producto | Referencia | Relacionado a inventario y categorías.                                        |
 | Proveedor | Referencia | Reutilizable entre múltiples órdenes de compra.                               |
+
+
+####Documentacion por Entidad JSON #####
+# **Explicación de las Relaciones**
+
+## **Sucursal - Bodega**
+* Una sucursal puede tener varias bodegas asociadas.
+* Esta relación es **referenciada** mediante el campo `codigoSucursal`.
+
+---
+
+## **Bodega - Inventario**
+* Una bodega contiene productos en su inventario.
+* Esta relación también es **referenciada**, y los productos se identifican por su `codigoBarras`.
+
+---
+
+## **Inventario - Producto**
+* El inventario referencia productos mediante el campo `codigoBarras`.
+* Los productos están definidos en su propia colección.
+
+---
+
+## **Producto - Categoría**
+* Cada producto pertenece a una categoría, identificada mediante `codigoCategoria`.
+* Esta relación es **referenciada**.
+
+---
+
+## **Producto - Sucursal**
+* Los productos tienen una relación **embebida** con las sucursales donde están disponibles.
+* Se incluye la cantidad disponible en cada sucursal.
+
+---
+
+## **Orden de Compra - Proveedor**
+* Una orden de compra referencia a un proveedor mediante su `NIT`.
+* La relación es **referenciada**.
+
+---
+
+## **Recepción de Productos**
+* Define los productos recibidos en una bodega específica (`codigoBodega`).
+* Incluye información de:
+  * Fecha.
+  * Hora.
+  * Lista de los productos recibidos con sus cantidades.

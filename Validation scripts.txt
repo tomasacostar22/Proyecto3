@@ -1,0 +1,307 @@
+inventario
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'codigoBodega',
+      'codigoBarras',
+      'cantidad',
+      'nivelMinimo',
+      'costoBodega'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'string',
+        description: 'Debe ser un ID único en formato string'
+      },
+      codigoBodega: {
+        bsonType: 'string',
+        description: 'Código de la bodega donde se almacena el producto'
+      },
+      codigoBarras: {
+        bsonType: 'string',
+        description: 'Código de barras único del producto'
+      },
+      cantidad: {
+        bsonType: 'int',
+        minimum: 0,
+        description: 'Cantidad de unidades disponibles (debe ser >= 0)'
+      },
+      nivelMinimo: {
+        bsonType: 'int',
+        minimum: 0,
+        description: 'Nivel mínimo de inventario permitido (debe ser >= 0)'
+      },
+      costoBodega: {
+        bsonType: 'double',
+        minimum: 0,
+        description: 'Costo en bodega, debe ser un número mayor o igual a 0'
+      },
+      _class: {
+        bsonType: 'string',
+        description: 'Clase opcional para clasificación extendida'
+      }
+    }
+  }
+}
+categorias
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'nombre',
+      'descripcion',
+      'caracteristicasAlmacenamiento'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'string'
+      },
+      nombre: {
+        bsonType: 'string'
+      },
+      descripcion: {
+        bsonType: 'string'
+      },
+      caracteristicasAlmacenamiento: {
+        bsonType: 'string'
+      },
+      _class: {
+        bsonType: 'string'
+      }
+    }
+  }
+}
+ordenes de compra
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'fechaCreacion',
+      'fechaEntrega',
+      'estado',
+      'nitProveedor',
+      'codigoSucursal'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'string',
+        description: 'Debe ser un ID único en formato string'
+      },
+      fechaCreacion: {
+        bsonType: 'date',
+        description: 'Fecha de creación de la orden'
+      },
+      fechaEntrega: {
+        bsonType: 'date',
+        description: 'Fecha estimada para la entrega'
+      },
+      estado: {
+        'enum': [
+          'PENDIENTE',
+          'ENTREGADO',
+          'CANCELADO'
+        ],
+        description: 'Estado de la orden: PENDIENTE, ENTREGADO o CANCELADO'
+      },
+      nitProveedor: {
+        bsonType: 'string',
+        description: 'NIT del proveedor asociado'
+      },
+      codigoSucursal: {
+        bsonType: 'string',
+        description: 'Código de la sucursal que realiza la orden'
+      },
+      detalleOrden: {
+        bsonType: 'array',
+        items: {
+          bsonType: 'object',
+          required: [
+            'codigo_barras_producto',
+            'cantidad',
+            'precio_unitario'
+          ],
+          properties: {
+            codigo_barras_producto: {
+              bsonType: 'string',
+              description: 'Código de barras único del producto'
+            },
+            cantidad: {
+              bsonType: 'int',
+              minimum: 1,
+              description: 'Cantidad solicitada del producto (mínimo 1)'
+            },
+            precio_unitario: {
+              bsonType: 'double',
+              minimum: 0,
+              description: 'Precio unitario del producto (mayor o igual a 0)'
+            }
+          }
+        },
+        description: 'Lista opcional de detalles de la orden (productos, cantidades y precios)'
+      },
+      _class: {
+        bsonType: 'string',
+        description: 'Clase opcional para clasificación extendida'
+      }
+    }
+  }
+}
+productos
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'nombre',
+      'presentacion',
+      'cantidad',
+      'unidadMedida',
+      'codigoCategoria',
+      'fechaExpiracion',
+      'precio'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'string',
+        description: 'Debe ser un ID único en formato string'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'Nombre del producto'
+      },
+      presentacion: {
+        bsonType: 'string',
+        description: 'Presentación del producto (e.g., Caja, Bolsa, etc.)'
+      },
+      cantidad: {
+        bsonType: 'int',
+        minimum: 1,
+        description: 'Cantidad en la presentación (debe ser al menos 1)'
+      },
+      unidadMedida: {
+        bsonType: 'string',
+        description: 'Unidad de medida para la cantidad (e.g., Kg, Litro, etc.)'
+      },
+      codigoCategoria: {
+        bsonType: 'string',
+        description: 'Código de la categoría a la que pertenece el producto'
+      },
+      fechaExpiracion: {
+        bsonType: 'date',
+        description: 'Fecha de expiración del producto'
+      },
+      precio: {
+        bsonType: 'double',
+        minimum: 0,
+        description: 'Precio del producto (mayor o igual a 0)'
+      },
+      _class: {
+        bsonType: 'string',
+        description: 'Clase opcional para clasificación extendida'
+      }
+    }
+  }
+}
+Proveedores 
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'nombre',
+      'direccion',
+      'nombreContacto',
+      'telefono'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'string',
+        description: 'Debe ser un ID único en formato string'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'Nombre del proveedor'
+      },
+      direccion: {
+        bsonType: 'string',
+        description: 'Dirección del proveedor'
+      },
+      nombreContacto: {
+        bsonType: 'string',
+        description: 'Nombre de la persona de contacto en el proveedor'
+      },
+      telefono: {
+        bsonType: 'string',
+        description: 'Teléfono del proveedor en formato válido, puede incluir código de país'
+      },
+      _class: {
+        bsonType: 'string',
+        description: 'Clase opcional para clasificación extendida'
+      }
+    }
+  }
+}
+sucursal 
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'nombre',
+      'tamaño',
+      'ciudad'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'string',
+        description: 'Debe ser un ID único en formato string'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'Nombre de la sucursal'
+      },
+      'tamaño': {
+        bsonType: 'string',
+        description: 'Tamaño de la sucursal (e.g., Grande, Mediana, Pequeña)'
+      },
+      ciudad: {
+        bsonType: 'string',
+        description: 'Ciudad donde está ubicada la sucursal'
+      },
+      bodegas: {
+        bsonType: 'array',
+        items: {
+          bsonType: 'object',
+          required: [
+            'codigo',
+            'nombre',
+            'tamaño'
+          ],
+          properties: {
+            codigo: {
+              bsonType: 'string',
+              description: 'Código único de la bodega'
+            },
+            nombre: {
+              bsonType: 'string',
+              description: 'Nombre de la bodega'
+            },
+            'tamaño': {
+              bsonType: 'string',
+              description: 'Tamaño de la bodega (e.g., Grande, Mediana, Pequeña)'
+            }
+          }
+        },
+        description: 'Lista opcional de bodegas asociadas a la sucursal'
+      },
+      _class: {
+        bsonType: 'string',
+        description: 'Clase opcional para clasificación extendida'
+      }
+    }
+  }
+}
