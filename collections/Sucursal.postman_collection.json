@@ -1,0 +1,77 @@
+{
+	"info": {
+		"_postman_id": "b9ac9d42-fced-41e6-b22e-70cb0332b46b",
+		"name": "Sucursal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38224761",
+		"_collection_link": "https://michelines.postman.co/workspace/Sistemas-transaccionales-~bccbee67-f6a2-4137-9845-c693f3d1c5c8/collection/38224761-b9ac9d42-fced-41e6-b22e-70cb0332b46b?action=share&source=collection_link&creator=38224761"
+	},
+	"item": [
+		{
+			"name": "Crear sucursal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.text();\r",
+							"\r",
+							"pm.globals.set(\"id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\":33,\r\n  \"id_ciudad\": {\r\n    \"id\": 32\r\n  },\r\n  \"nombre\": \"Sucursal Test\",\r\n  \"metrosCuadrados\": 500,\r\n  \"direccion\": \"123 Calle Principal\",\r\n  \"telefono\": \"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/sucursales/new/save",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"sucursales",
+						"new",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/sucursal/reporte/\"2\"",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"sucursal",
+						"reporte",
+						"\"2\""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

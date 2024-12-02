@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "03c2396a-0758-4ef1-a08f-9ab8176863bf",
+		"name": "Proveedores",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38224761",
+		"_collection_link": "https://michelines.postman.co/workspace/Sistemas-transaccionales-~bccbee67-f6a2-4137-9845-c693f3d1c5c8/collection/38224761-03c2396a-0758-4ef1-a08f-9ab8176863bf?action=share&source=collection_link&creator=38224761"
+	},
+	"item": [
+		{
+			"name": "Crear Proveedor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"nit\": \"123456789\",\r\n  \"nombre\": \"Proveedor Test\",\r\n  \"nombreContacto\": \"John Doe\",\r\n  \"telefono\": \"1234567890\",\r\n  \"caracteristicasAlmacenamiento\": \"Almacenamiento en frío\",\r\n  \"direccion\": \"Calle 123, Ciudad\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/proveedores/new/save",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"proveedores",
+						"new",
+						"save"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear proveedor",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nombre\":\"John Doe\",\r\n\"direccion\":\"Calle 123#21-30\",\r\n\"caracteristicasAlmacenamiento\":\"\",\r\n\"telefono\":\"3112573030\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}\n/proveedores",
+							"host": [
+								"{{url}}\n"
+							],
+							"path": [
+								"proveedores"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"NIT\":123456,\r\n\"nombre\":\"John Doe\",\r\n\"direccion\":\"Calle 123#21-30\",\r\n\"caracteristicasAlmacenamiento\":\"\",\r\n\"telefono\":\"3112573030\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar proveedor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Proveedor Actualizado\",\r\n  \"nombreContacto\": \"Jane Doe\",\r\n  \"telefono\": \"987654321\",\r\n  \"caracteristicasAlmacenamiento\": \"No refrigerado\",\r\n  \"direccion\": \"Calle 456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/proveedores/1/update",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"proveedores",
+						"1",
+						"update"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar proveedor",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nombre\":\"John Doe\",\r\n\"direccion\":\"Calle 123#21-30\",\r\n\"caracteristicasAlmacenamiento\":\"\",\r\n\"telefono\":\"3112573030\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/proveedores",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"proveedores"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"NIT\":12345,\n    \"nombre\": \"John Doe\",\n    \"direccion\": \"Calle 123#21-30\",\n    \"caracteristicasAlmacenamiento\": \"\",\n    \"telefono\": \"3112573030\"\n}"
+				}
+			]
+		}
+	]
+}

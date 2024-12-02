@@ -1,0 +1,185 @@
+{
+	"info": {
+		"_postman_id": "8faec61f-7a51-440e-9ead-dc22d9a28387",
+		"name": "Producto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38224761",
+		"_collection_link": "https://michelines.postman.co/workspace/Sistemas-transaccionales-~bccbee67-f6a2-4137-9845-c693f3d1c5c8/collection/38224761-8faec61f-7a51-440e-9ead-dc22d9a28387?action=share&source=collection_link&creator=38224761"
+	},
+	"item": [
+		{
+			"name": "Crear producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.text();\r",
+							"\r",
+							"pm.globals.set(\"id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"codigoBarras\":1,\r\n    \"idCategoria\":1, \r\n    \"fechaExpiracion\": \"2025-06-30\",\r\n    \"precioUnitario\": 1200,\r\n    \"costoBodega\": 600,\r\n    \"peso\": 15,\r\n    \"cantidad\": 150,\r\n    \"presentacion\": \"Botella\",\r\n    \"volumen\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/productos/new/save",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"productos",
+						"new",
+						"save"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"codigoBarras\":1,\r\n    \"idCategoria\":1, \r\n    \"fechaExpiracion\": \"2025-06-30\",\r\n    \"precioUnitario\": 1200,\r\n    \"costoBodega\": 600,\r\n    \"peso\": 15,\r\n    \"cantidad\": 150,\r\n    \"presentacion\": \"Botella\",\r\n    \"volumen\": 60\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/productos/new/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"productos",
+								"new",
+								"save"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"codigoBarras\":1,\r\n    \"idCategoria\":1,   \r\n    \"fechaExpiracion\": \"2025-06-30\",\r\n    \"precioUnitario\": 1200,\r\n    \"costoBodega\": 600,\r\n    \"peso\": 15,\r\n    \"cantidad\": 150,\r\n    \"presentacion\": \"Botella\",\r\n    \"volumen\": 60\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Leer producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/productos/{{id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"productos",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/productos/{{id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"productos",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/producto/filtrar/100/150000/2024-01-01/\"Sucursal Bogota\"/Limpieza/true\n",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"producto",
+						"filtrar",
+						"100",
+						"150000",
+						"2024-01-01",
+						"\"Sucursal Bogota\"",
+						"Limpieza",
+						"true\n"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

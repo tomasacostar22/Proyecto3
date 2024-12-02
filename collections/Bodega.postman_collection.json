@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "821a06ad-ae67-4791-b7e9-23034c1d6d8f",
+		"name": "Bodega",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38224761",
+		"_collection_link": "https://michelines.postman.co/workspace/Sistemas-transaccionales-~bccbee67-f6a2-4137-9845-c693f3d1c5c8/collection/38224761-821a06ad-ae67-4791-b7e9-23034c1d6d8f?action=share&source=collection_link&creator=38224761"
+	},
+	"item": [
+		{
+			"name": "Crear bodega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.text();\r",
+							"\r",
+							"pm.globals.set(\"id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n    \"id_sucursal\": {\r\n        \"id\": 1\r\n    },\r\n    \"tamanio\": 300\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/bodegas/new/save",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"bodegas",
+						"new",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar Bodega",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/62/delete",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"62",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "d2dc08d1-53c3-4162-82cc-6efce2aba2bd",
+		"name": "Orden de Compra para Sucursal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38224761",
+		"_collection_link": "https://michelines.postman.co/workspace/Sistemas-transaccionales-~bccbee67-f6a2-4137-9845-c693f3d1c5c8/collection/38224761-d2dc08d1-53c3-4162-82cc-6efce2aba2bd?action=share&source=collection_link&creator=38224761"
+	},
+	"item": [
+		{
+			"name": "Crear Orden de  Compra para Sucursal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.text();\r",
+							"\r",
+							"pm.globals.set(\"id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\":2,\r\n  \"nombre\": \"Orden de productos varios\",\r\n  \"descripcion\": \"Tecnologia\",\r\n  \"caracteristicasAlmacenamiento\": \"Almacenamiento en seco\",\r\n  \"estado\": \"Vigente\",\r\n  \"sucursalId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ordenes_de_compra/new/save",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ordenes_de_compra",
+						"new",
+						"save"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear sucursal",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nombre\":\"Bogotá\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sucursales",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sucursales"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"id\":1,\r\n\"idCiudad\":1,\r\n\"nombre\":\"Bogotá\",\r\n\"metrosCuadrados\":\"200\",\r\n\"direccion\":\"Calle 123#21-30\",\r\n\"telefono\":\"3112573030\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar orden de Compra a Anulad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\":21,\r\n  \"nombre\": \"Orden de productos varios\",\r\n  \"descripcion\": \"Tecnologia\",\r\n  \"caracteristicasAlmacenamiento\": \"Almacenamiento en seco\",\r\n  \"estado\": \"Anulada\",\r\n  \"sucursalId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/ordenes_de_compra/21/update",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ordenes_de_compra",
+						"21",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar Todas las ordenes de compra",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/ordenes_de_compra",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ordenes_de_compra"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

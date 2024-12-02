@@ -1,0 +1,113 @@
+{
+  "Sucursal": {
+    "_id": "1",
+    "nombre": "Sucursal Bogotá",
+    "tamaño": "Grande",
+    "ciudad": "Bogotá",
+    "bodegas": [
+      {
+        "codigo": "B1",
+        "nombre": "Bodega Principal"
+      },
+      {
+        "codigo": "B2",
+        "nombre": "Bodega Secundaria"
+      }
+    ]
+  },
+  "Bodega": {
+    "_id": "B1",
+    "nombre": "Bodega Principal",
+    "tamaño": "Grande",
+    "codigoSucursal": "1",
+    "inventario": [
+      {
+        "codigoBarras": "PROD1",
+        "cantidad": 50,
+        "nivelMinimo": 10,
+        "costoBodega": 2000
+      },
+      {
+        "codigoBarras": "PROD2",
+        "cantidad": 30,
+        "nivelMinimo": 5,
+        "costoBodega": 1500
+      }
+    ]
+  },
+  "Inventario": {
+    "_id": "1",
+    "codigoBodega": "B1",
+    "codigoBarras": "PROD1",
+    "cantidad": 100,
+    "nivelMinimo": 20,
+    "costoBodega": 2000
+  },
+  "Producto": {
+    "_id": "PROD1",
+    "nombre": "Detergente",
+    "presentacion": "1L",
+    "cantidad": 100,
+    "unidadMedida": "Litro",
+    "precio": 5000,
+    "codigoCategoria": "CAT1",
+    "sucursales": [
+      {
+        "codigoSucursal": "1",
+        "nombre": "Sucursal Bogotá",
+        "cantidadDisponible": 100
+      },
+      {
+        "codigoSucursal": "2",
+        "nombre": "Sucursal Medellín",
+        "cantidadDisponible": 50
+      }
+    ]
+  },
+  "Categoria": {
+    "_id": "CAT1",
+    "nombre": "Limpieza",
+    "descripcion": "Productos relacionados con la limpieza",
+    "caracteristicasAlmacenamiento": "Lugar seco y fresco"
+  },
+  "OrdenCompra": {
+    "_id": "OC1",
+    "codigoSucursal": "1",
+    "fecha": "2024-01-01",
+    "NITProveedor": "9001234567",
+    "estado": "Pendiente",
+    "productos": [
+      {
+        "codigoBarras": "PROD1",
+        "cantidad": 10,
+        "precioUnitario": 5000
+      },
+      {
+        "codigoBarras": "PROD2",
+        "cantidad": 5,
+        "precioUnitario": 15000
+      }
+    ]
+  },
+  "Proveedor": {
+    "_id": "9001234567",
+    "nombre": "Proveedor XYZ",
+    "direccion": "Calle 123, Bogotá",
+    "telefono": "3201234567"
+  },
+  "RecepcionProducto": {
+    "fecha": "2024-01-02",
+    "hora": "10:30:00",
+    "codigoBodega": "B1",
+    "productosRecibidos": [
+      {
+        "codigoBarras": "PROD1",
+        "cantidad": 20
+      },
+      {
+        "codigoBarras": "PROD2",
+        "cantidad": 10
+      }
+    ]
+  }
+}
